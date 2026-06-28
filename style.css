@@ -1,0 +1,215 @@
+/* ============================================================
+   SHOPPING BASKET CHECKER — STYLESHEET
+   ------------------------------------------------------------
+   Design concept: the results panel is treated like a printed
+   receipt tape — items print downward, a perforated tear
+   appears once the basket is complete. Monospace type is used
+   for all numbers/prices (a ledger reads better in a fixed-width
+   face); Inter is used for labels, headings and UI chrome.
+   ============================================================ */
+
+/* ---------- 1. Design tokens ---------- */
+:root {
+    --color-bg: #0a0a0a;
+    --color-panel: #1c1c1c;
+    --color-panel-raised: #232325;
+    --color-border: #2e2e32;
+    --color-border-soft: #242426;
+    --color-text : #f5f5f7;
+    --color-text-muted: #9a9aa2;
+    --color-text-faint: #6b6b72;
+    --color-blue: #3d7fff;
+    --color-blue-light: #7aa6ff;
+    --color-blue-dim: rgba(61, 127, 355, 0.14);
+
+    /* Status accents*/
+    --color-status-warn: #ff6b6b;
+    --color-status-caution: #e0b04d;
+
+    /* Typography*/
+    --font-dispaly: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+    /* Layout */
+    --radius-lg: 16px;
+    --raduis-md: 10px;
+    --raduis-sm: 6px;
+    --shadow-card: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:  var(--color-bg);
+    background-image: 
+        radial-gradient(circle at 15% 0%, rgba(61, 127, 255, 0.08), transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(61, 127, 255, 0.08), transparent 50%),
+    color: var(--color-text);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+/* Page Scaffold */
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+    gap: 20px;
+}
+
+/*card*/
+.card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.card__header {
+    padding: 28px 28px 24px;
+    border-bottom: 1px solid var(--color-border-soft);
+}
+
+.eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-blue-light);
+    margin-bottom: 8px;
+}
+
+.card__header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/*Entry section*/
+.entry {
+    padding: 24px 28px 26px;
+    border-bottom: 1px solid var(--color-border-soft);
+}
+
+.entry h2#prompt {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: 14px;
+}
+
+.entry__row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.currency-prefix {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-faint);
+    background: var(--color-panel-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--raduis-sm);
+}
+
+#price-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--color-panel-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--raduis-sm);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    padding: 0 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#price-input::placeholder {
+    color: var(--color-text-faint);
+}
+
+#price-input:focus-visible {
+    border-color: var(--color-blue);
+    box-shadow: 0 0 0 3px var(--color-blue-dim);
+}
+
+/* Remove number input spin arrows for a cleaner look*/
+
+#price-input::-webkit-inner-spin-button,
+#price-input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+#price-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#add-btn {
+    flex-shrink: 0;
+    background: var(--color-blue);
+    color: #fff;
+    border: 1px solid var(--color-blue);
+    border-radius: var(--raduis-sm);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 18px;
+    cursor: pointer;
+    transition: background 0.15s ease, trasnform 0.05s ease;
+}
+
+#add-btn:hover:not(:disabled) {
+    background: var(--color-blue-light);
+}
+
+#add-btn:active:not(:disabled) {
+   transform: scale(0.97);
+}
+
+#add-btn:focus-visible {
+    outline: 2px solid var(--color-blue-light);
+    outline-offset: 2px;
+}
+
+#add-btn:disabled {
+    background: var(--color-border-raised);
+    border-color: var(--color-border);
+    color: var(--color-text-faint);
+    cursor: default;
+}
+
+/* Progress dots: one per basket slot (5 items)*/
+.progress {
+    display: flex;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.progress__dot {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--color-border);
+}
